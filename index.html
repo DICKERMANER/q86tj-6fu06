@@ -181,6 +181,7 @@ html[data-mode="desktop"] .menu-fab { display:none  !important; }
         <span class="title">特寵飲食照顧注意事項（主頁）</span>
       </div>
       <div class="grow"></div>
+        <button id="toApps" class="chip" title="回切換 App" aria-label="回切換 App">↩︎ 切換 App</button>
       <div class="view-dock" aria-label="檢視切換">
         <button class="chip" data-view="table" title="表格" aria-pressed="true">表格</button>
         <button class="chip" data-view="bar"   title="長條圖" aria-pressed="false">長條</button>
@@ -202,10 +203,10 @@ html[data-mode="desktop"] .menu-fab { display:none  !important; }
   <div class="shell">
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="側欄">
       <nav class="nav">
-        <a class="navlink" data-section="apps">1 切換 App</a>
+        <a class="navlink active" data-section="apps">1 切換 App</a>
         <a class="navlink" data-section="intro">2 簡介</a>
         <a class="navlink" data-section="risks">3 疾病風險 / 基因缺陷</a>
-        <a class="navlink active" data-section="diet">4 特寵飲食注意事項（圖表/表格）</a>
+        <a class="navlink" data-section="diet">4 特寵飲食注意事項（圖表/表格）</a>
         <a class="navlink" data-section="sources">5 來源資料</a>
         <a class="navlink" data-section="summary">6 總結</a>
       </nav>
@@ -223,7 +224,7 @@ html[data-mode="desktop"] .menu-fab { display:none  !important; }
 
     <main class="content" id="content" tabindex="-1">
       <!-- 1 切換 App -->
-      <section class="panel" data-panel="apps">
+      <section class="panel active" data-panel="apps">
         <div class="card">
           <h2>1｜切換 App</h2>
           <p class="muted">三個按鈕分別開新分頁。</p>
@@ -245,7 +246,7 @@ html[data-mode="desktop"] .menu-fab { display:none  !important; }
       <section class="panel" data-panel="intro">
         <div class="card">
           <h2>2｜簡介</h2>
-          <p>123</p>
+          <p>開發研究專用app網頁切換apps觀看其餘資料</p>
         </div>
       </section>
 
@@ -272,7 +273,7 @@ html[data-mode="desktop"] .menu-fab { display:none  !important; }
       </section>
 
       <!-- 4 飲食注意事項（原表/圖） -->
-      <section class="panel active" data-panel="diet">
+      <section class="panel" data-panel="diet">
         <div class="card">
           <h2>4｜特寵飲食注意事項（表格/長條/圓餅）</h2>
           <p class="muted">支援段位跳轉 1/2/3、字級縮放，以及圖表類型切換。</p>
@@ -948,6 +949,31 @@ function renderAll(){
 /* ====== 初始化 ====== */
 const initial = (location.hash.match(/view=(\w+)/)||[])[1] || 'table';
 applyView(initial);
+// ====== Topbar「↩︎ 切換 App」按鈕 ======
+(function(){
+  const btn = document.getElementById('toApps');
+  if(!btn) return;
+  function mobileLike(){
+    const root = document.documentElement;
+    const forced = root.getAttribute('data-mode');
+    return forced === 'mobile' || (forced !== 'desktop' && matchMedia('(max-width:1023px)').matches);
+  }
+  function update(){
+    const active = document.querySelector('.panel.active')?.dataset.panel;
+    btn.style.display = active === 'apps' ? 'none' : '';
+  }
+  const _showPanel = showPanel;
+  showPanel = function(name){
+    _showPanel(name);
+    update();
+  };
+  btn.addEventListener('click', ()=>{
+    showPanel('apps');
+    if(mobileLike() && typeof closeDrawer==='function') closeDrawer();
+    document.getElementById('content')?.scrollTo({top:0, behavior:'smooth'});
+  });
+  update();
+})();
 </script>
 </body>
 </html>
