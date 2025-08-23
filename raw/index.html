@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Repti-Pro 行動版研究頁</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>html, body { margin:0; background:#0b0326; }</style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useMemo, useState } = React;
+      
+// —— 分頁（categories）——
+const categories = [
+  "🏁 總覽",
+  " 原本成分",
+  " 更新後成分",
+  "🧪 原本所有成分對照新成分PK",
+  "🧬 建議新配方",
+  " 必須移除的配方",
+  " 必須新增的配方",
+  " 建議所有特寵爬蟲另外搭配保健品",
+  "🗒️ 劑量與使用",
+  "🩺 疾病風險對照",
+  "🧯 劑型與適口性",
+  "📊 圖表與資料集",
+  "🧠 SWOT",
+  "🔗 參考來源",
+];
+
+// —— 原本菌株與成分（來自對話，未杜撰）——
+const originalStrains = [
+  { latin: "Lactiplantibacillus plantarum (舊：Lactobacillus plantarum)", zh: "植物乳桿菌", type: "乳酸菌", note: "SNK 植物性奈米型乳酸菌（免疫調節宣稱）", strainCode: "—" },
+  { latin: "Limosilactobacillus fermentum (舊：Lactobacillus fermentum)", zh: "發酵乳桿菌", type: "乳酸菌", note: "—", strainCode: "—" },
+  { latin: "Lacticaseibacillus rhamnosus", zh: "鼠李糖乳桿菌", type: "乳酸菌", note: "—", strainCode: "—" },
+  { latin: "Lacticaseibacillus paracasei", zh: "副乾酪乳桿菌", type: "乳酸菌", note: "—", strainCode: "—" },
+  { latin: "Bifidobacterium breve", zh: "短雙歧桿菌", type: "雙歧桿菌", note: "—", strainCode: "—" },
+  { latin: "Lacticaseibacillus casei", zh: "乾酪乳桿菌", type: "乳酸菌", note: "—", strainCode: "—" },
+  { latin: "Bifidobacterium bifidum", zh: "比菲德氏雙歧桿菌", type: "雙歧桿菌", note: "—", strainCode: "—" },
+  { latin: "Bifidobacterium longum", zh: "長雙歧桿菌", type: "雙歧桿菌", note: "—", strainCode: "—" },
+  { latin: "Lactobacillus acidophilus", zh: "嗜酸乳桿菌", type: "乳酸菌", note: "—", strainCode: "—" },
+  { latin: "Streptococcus thermophilus", zh: "嗜熱鏈球菌", type: "鏈球菌", note: "優酪乳發酵菌", strainCode: "—" },
+  { latin: "Lactococcus lactis", zh: "乳酸乳球菌", type: "乳球菌", note: "—", strainCode: "—" },
+  { latin: "Lactobacillus delbrueckii subsp. bulgaricus", zh: "保加利亞乳桿菌", type: "乳酸菌", note: "優酪乳發酵菌", strainCode: "—" },
+];
+
+const originalOthers = [
+  { item: "乳糖", tag: "載體/甜味", risk: "⛔ 乳糖酶缺乏 → 軟便風險", keep: false },
+  { item: "微結晶 α-纖維素", tag: "流動/填充", risk: "—", keep: true },
+  { item: "甘油", tag: "保濕/甜味", risk: "⚠️ 吸濕結塊、瀉下", keep: false },
+  { item: "綜合酵素：蛋白/脂肪/纖維素/澱粉（載體：麥芽糊精）", tag: "消化酵素", risk: "—", keep: true },
+  { item: "20% 寡糖（玉米澱粉、果寡糖）", tag: "益生元/載體", risk: "⚠️ 高滲軟便（過量）", keep: true },
+  { item: "初乳蛋白（牛初乳）", tag: "動物性免疫蛋白", risk: "⛔ 草食/爬蟲無必要，過敏/檢疫負擔", keep: false },
+  { item: "中鏈三酸甘油酯(MCT)", tag: "脂肪", risk: "⚠️ 軟便、油膩、非必要日用", keep: false },
+  { item: "牛肉萃取物（卵磷脂）", tag: "誘香/乳化", risk: "⛔ 草食抗拒、動物性來源", keep: false },
+  { item: "水解大豆蛋白粉", tag: "植物蛋白", risk: "⚠️ 量大→含氮負荷", keep: true },
+  { item: "棕櫚油", tag: "脂肪", risk: "⚠️ 氧化/黏粉", keep: false },
+  { item: "膠原蛋白粉（日本專利）", tag: "關節/動物性", risk: "⛔ 非必需、草食不宜", keep: false },
+  { item: "鯊魚軟骨粉", tag: "關節/動物性", risk: "⛔ 非必需、草食不宜", keep: false },
+];
+
+// —— 新配方建議（含 SNK 旗艦菌）——
+const newStrains = [
+  { latin: "Bacillus subtilis", zh: "枯草芽孢桿菌", type: "孢子益生菌", cfug: "≥5×10^8 CFU/g (末端 ≥2.5×10^8)", role: "耐熱耐酸/蛋白酶" },
+  { latin: "Bacillus licheniformis", zh: "地衣芽孢桿菌", type: "孢子益生菌", cfug: "≥2×10^8 (末端 ≥1×10^8)", role: "澱粉/蛋白酶" },
+  { latin: "Bacillus coagulans", zh: "凝結芽孢桿菌", type: "孢子益生菌", cfug: "≥1×10^8 (末端 ≥5×10^7)", role: "產乳酸，廣溫活性" },
+  { latin: "Lactiplantibacillus plantarum", zh: "植物乳桿菌（SNK 專利）", type: "乳酸菌", cfug: "可高規至 ≥1×10^9（視 SKU）", role: "腸黏膜/SCFA/品牌核心" },
+  { latin: "Pediococcus acidilactici 或 Limosilactobacillus reuteri", zh: "小球菌/羅伊氏乳桿菌（二選一）", type: "乳酸菌", cfug: "≥1×10^8 (末端 ≥5×10^7)", role: "腸黏膜調節" },
+];
+
+const newOthers = [
+  { item: "消化酵素組：蛋白酶 ≥5,000 U/g、幾丁質酶 ≥500 U/g、脂肪酶 ≥100 U/g、澱粉酶 ≥200 U/g、纖維素/果膠/木聚糖酶 各≥100 U/g", tag: "多酶合劑", need: "必增" },
+  { item: "益生元：FOS 1.5% + MOS 0.4% + 幾丁寡糖 0.2%", tag: "低糖益生元", need: "必增" },
+  { item: "適口性：黑水虻水解物 0.8% + 脫脂蟋蟀粉 0.2%", tag: "天然誘香（低量）", need: "建議" },
+  { item: "載體：米澱粉 q.s.", tag: "惰性載體", need: "建議" },
+  { item: "工藝：阿拉伯膠 0.4%（附著） + 二氧化矽 0.6%（抗結塊）", tag: "粉體工程", need: "必增" },
+  { item: "總活菌：目標 ≥1×10^9 CFU/g；效期末 ≥5×10^8 CFU/g", tag: "活性指標", need: "必增" },
+];
+
+// —— 行動劑量與使用 ——
+const dosing = {
+  daily: {
+    rule: "每 100 g 體重 → 1×10^8 CFU/日 ≈ 粉 0.1 g/日",
+    examples: [
+      { species: "豹紋守宮 60 g", dose: "0.06 g/日（約 1/8 平匙）" },
+      { species: "鬃獅蜥 300 g", dose: "0.3 g/日（約 3/5 平匙）" },
+      { species: "陸龜 1 kg", dose: "1 g/日（1 平匙）" },
+    ],
+  },
+  perMeal: {
+    rule: "蛇類按獵物重量 → 0.2 g / 100 g 獵物（每餐一次）",
+    examples: [ { species: "球蟒 200 g 獵物", dose: "0.4 g/餐" } ],
+  },
+  timing: [
+    "與鈣/D3 可同日，建議先鈣後益生菌或間隔 ≥2 小時",
+    "與抗生素/驅蟲藥錯開 ≥3 小時",
+    "高溫&gt;40℃ 勿混（殺菌）",
+  ],
+};
+
+// —— 疾病風險 × 成分對照 ——
+const risks = [
+  { disease: "MBD（代謝性骨病）", cause: "Ca:P 失衡、UVB 不足、D3 缺乏", formulaLink: "配合鈣+D3、UVB", support: "益生菌+酵素→提升吸收與食慾" },
+  { disease: "維生素 A 缺乏", cause: "食蟲為主、餌蟲未 gut‑load", formulaLink: "gut‑load + 低劑量多元維生素", support: "益生菌+FOS/MOS→腸黏膜" },
+  { disease: "痛風（尿酸沈積）", cause: "脫水/高蛋白/低溫腎灌流", formulaLink: "控制蛋白＆水分/電解質", support: "益生菌+酵素→蛋白消化；電解質維持" },
+  { disease: "腸炎/軟便", cause: "餌料切換/病原攪動/高糖", formulaLink: "低糖益生元、孢子益菌抑菌", support: "阿拉伯膠改善裹粉、劑量小步進" },
+];
+
+// —— 劑型與適口性 ——
+const forms = [
+  { form: "DUST 超微粉（80–120 目）", pros: ["乾用即可沾活餌", "氣味散發佳", "少量即覆蓋"], cons: ["吸濕→結塊風險", "需乾燥包材"] },
+  { form: "SOAK 可溶細顆粒（0.3–1.0 mm）", pros: ["水盆/解凍獵物友善", "不易飛粉"], cons: ["附著性較差", "建議先輕霧水"] },
+];
+
+// —— Datasets（供圖表用；不足者留空）——
+const datasets = {
+  cfus: { labels: ["新配方目標", "效期末保證"], data: [1e9, 5e8], unit: "CFU/g" },
+  taiwanNonDogCat: { labels: ["非犬貓家庭占比(2024)"], data: [9.3], unit: "%" },
+  speciesSharesTW: { labels: [], data: [], unit: "%" },
+};
+
+// —— 參考來源（所有網址；去重）——
+const references = [
+  { url: "https://patents.justia.com/patent/5879719", note: "US 5,879,719：爬蟲/兩棲抑制沙門氏菌之益生菌製程" },
+  { url: "https://www.reptilesupplyco.com", note: "NutriBAC df 產品通路（配方說明）" },
+  { url: "https://www.lugarti.com/premium-reptile-probiotics", note: "Lugarti 益生菌成分/酵素" },
+  { url: "https://talis-us.com/products/lugartis-premium-reptile-probiotics", note: "Lugarti 產品頁替代連結" },
+  { url: "https://loroindia.com/product/probiotic-supplements-for-reptiles/", note: "Loro Probiotic‑R 成分與 CFU/劑量" },
+  { url: "https://www.arcadiareptile.com/supplement-range/", note: "Arcadia EarthPro 系列（EarthPro‑A 成分）" },
+  { url: "https://zoomed.com/reptivite-with-d3/", note: "Zoo Med Reptivite with D3 成分" },
+  { url: "https://www.merckvetmanual.com/management-and-nutrition/nutrition-exotic-and-zoo-animals/nutrition-in-reptiles", note: "Merck：Nutrition in Reptiles" },
+  { url: "https://www.merckvetmanual.com/reptiles/nutritional-disorders-of-reptiles/nutritional-metabolic-and-endocrine-diseases-of-reptiles", note: "Merck：Nutritional/Metabolic/Endocrine Diseases" },
+  { url: "https://www.merckvetmanual.com/exotic-and-laboratory-animals/sugar-gliders/overview-of-sugar-gliders", note: "Merck：Sugar Glider 概述（飲食/風險）" },
+  { url: "https://vcahospitals.com/know-your-pet/gout-in-reptiles", note: "VCA：爬蟲痛風成因" },
+  { url: "http://www.anapsid.org/gout.html", note: "Anapsid：爬蟲痛風與代謝" },
+  { url: "https://veterinaryvisioncenter.com/hypovitaminosis-a-in-reptiles/", note: "Hypovitaminosis A：高風險族群與症狀" },
+  { url: "https://animal.moa.gov.tw/public/files/LatestNews_anp_news/202503310609020001.pdf", note: "農業部：2024 寵物飼養調查（非犬貓 9.3%）" },
+  { url: "https://udn.com/news/story/7266/7364017", note: "新聞：寵物經濟論壇（特寵趨勢）" },
+  { url: "https://tw.piliapp.com/facebook-symbols/", note: "表情符號參考" },
+];
+
+// —— UI ——
+const clsPill = (tone) => ({
+  red: "px-2 py-1 rounded-full text-xs font-bold bg-red-600/30 text-red-300 border border-red-400/40 mr-2",
+  green: "px-2 py-1 rounded-full text-xs font-bold bg-green-600/30 text-green-300 border border-green-400/40 mr-2",
+  blue: "px-2 py-1 rounded-full text-xs font-bold bg-blue-600/30 text-blue-300 border border-blue-400/40 mr-2",
+  emerald: "px-2 py-1 rounded-full text-xs font-bold bg-emerald-600/30 text-emerald-300 border border-emerald-400/40 mr-2",
+}[tone] || "px-2 py-1 rounded-full text-xs font-bold bg-white/10 text-white border border-white/20 mr-2");
+
+const Pill = ({ children, color = "blue" }) => (
+  <span className={clsPill(color)}>{children}</span>
+);
+
+function Section({ title, children }) {
+  return (
+    <section className="mb-6 p-4 rounded-2xl bg-white/5 border border-white/10">
+      <h3 className="text-xl font-extrabold mb-3 tracking-wide">{title}</h3>
+      <div className="text-sm leading-relaxed">{children}</div>
+    </section>
+  );
+}
+
+function Table({ cols, rows }) {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-white/10">
+      <table className="min-w-full text-sm">
+        <thead className="bg-white/10">
+          <tr>
+            {cols.map((c) => (
+              <th key={c} className="px-3 py-2 text-left font-bold">{c}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className="odd:bg-white/5">
+              {r.map((cell, j) => (
+                <td key={j} className="px-3 py-2 align-top whitespace-pre-wrap">{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function DangerText({ children }) {
+  return <span style={{ color: "#ff2d55", fontWeight: 800 }}>{children}</span>;
+}
+
+function App() {
+  const [tab, setTab] = useState(categories[0]);
+  const [compact, setCompact] = useState(true);
+  const [mobileWidth, setMobileWidth] = useState(true);
+
+  const page = useMemo(() => {
+    switch (tab) {
+      case categories[0]: // 總覽
+        return (
+          <>
+            <Section title="🚀 目標">
+              <ul className="list-disc ml-5 space-y-1">
+                <li>為台灣/亞洲常見特寵（守宮、鬃獅蜥、陸龜、蛇…）設計之<b>每日可餵</b>益生菌。</li>
+                <li>強調 <b>孢子型益生菌</b> + <b>多酶合劑</b> + <b>低糖益生元</b>，並提供易裹活餌之超微粉。</li>
+                <li>避免動物性原料，草食/雜食/肉食皆相容；對 UVB/鈣、A/D 等營養風險給出對策。</li>
+              </ul>
+            </Section>
+            <Section title="💜 旗艦核心菌（SNK）">
+              <div style={{fontWeight: 900, color: "#a78bfa"}}>
+                Lactiplantibacillus plantarum (舊：Lactobacillus plantarum) 植物乳桿菌 乳酸菌 SNK 植物性奈米型乳酸菌（免疫調節宣稱） — 這是我們專利也是主打，此菌株已有耐高溫、奈米微分子科技、耐胃酸、2兆菌(1g)
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Pill color="green">耐高溫</Pill>
+                <Pill color="green">耐胃酸</Pill>
+                <Pill color="blue">高濃度原粉</Pill>
+              </div>
+              <p className="mt-2">符號來源：<a className="underline" href="https://tw.piliapp.com/facebook-symbols/" target="_blank" rel="noreferrer">表情符號參考</a> 😊</p>
+            </Section>
+          </>
+        );
+
+      case categories[1]: // 原本成分
+        return (
+          <>
+            <Section title="🧫 原本菌株（12）">
+              <Table cols={["拉丁學名", "中文名", "類型", "備註", "菌株碼"]}
+                     rows={originalStrains.map(s => [s.latin, s.zh, s.type, s.note || "", s.strainCode])} />
+            </Section>
+            <Section title="🧱 其他成分（需/禁用標示）">
+              <Table
+                cols={["成分", "用途", "風險/說明", "建議"]}
+                rows={originalOthers.map(o => [
+                  o.item,
+                  o.tag,
+                  o.risk.includes("⛔") ? <DangerText>⛔ {o.risk.replace("⛔ ", "")}</DangerText> : (o.risk || ""),
+                  o.keep ? "保留/微調" : "移除",
+                ])}
+              />
+            </Section>
+          </>
+        );
+
+      case categories[2]: // 更新後成分
+        return (
+          <>
+            <Section title="🧫 新配方核心菌（含 SNK）">
+              <Table cols={["拉丁學名", "中文名", "類型", "規格（CFU/g）", "角色"]}
+                     rows={newStrains.map(s => [
+                       s.latin,
+                       s.zh === "植物乳桿菌（SNK 專利）" ? <span style={{fontWeight:900, color:'#a78bfa'}}>{s.zh}</span> : s.zh,
+                       s.type,
+                       s.cfug,
+                       s.role,
+                     ])} />
+            </Section>
+            <Section title="🧱 新增系統">
+              <Table cols={["項目", "定位", "必要性"]} rows={newOthers.map(x => [x.item, x.tag, x.need])} />
+            </Section>
+          </>
+        );
+
+      case categories[3]: // PK
+        return (
+          <Section title="🧪 原配方 vs 新配方 PK">
+            <Table
+              cols={["面向", "原配方", "新配方"]}
+              rows={[
+                ["益生菌群", "以乳酸/雙歧為主（12株）; 優酪乳菌含 S. thermophilus/ L. bulgaricus", "孢子+乳酸菌（5–6株）; 加入 SNK L. plantarum"],
+                ["動物性原料", "初乳/牛肉/膠原/軟骨", "全植物/微生物來源（⛔ 全移除）"],
+                ["載體/甜味", "乳糖/蔗糖/甘油/麥芽糊精", "FOS/MOS/米澱粉；無甘油；低糖"],
+                ["酵素", "蛋白/脂肪/澱粉/纖維（量未知）", "多酶合劑 + 幾丁質酶（定量）"],
+                ["粉體", "偏顆粒，常需先潤濕", "DUST 超微粉（乾用裹蟲） + SOAK 顆粒（蛇/龜）"],
+                ["CFU 指標", "未見末端保證", "目標 1e9，末端 ≥5e8 CFU/g（SKU 可更高）"],
+              ]}
+            />
+          </Section>
+        );
+
+      case categories[4]: // 建議新配方
+        return (
+          <Section title="🧬 建議新配方（v1.0 可量產）">
+            <ul className="list-disc ml-5 space-y-1">
+              <li>總活菌：<b>≥1×10^9 CFU/g</b>；效期末：<b>≥5×10^8</b>。</li>
+              <li>菌群：B. subtilis（5e8）、B. licheniformis（2e8）、B. coagulans（1e8）、<span style={{fontWeight:900, color:'#a78bfa'}}>L. plantarum（SNK）≥1e8</span>、P. acidilactici 或 L. reuteri（1e8）。</li>
+              <li>酵素：蛋白酶≥5,000U/g；幾丁質酶≥500U/g；脂肪酶≥100U/g；澱粉酶≥200U/g；纖維素/果膠/木聚糖酶各≥100U/g。</li>
+              <li>益生元：FOS 1.5% + MOS 0.4% + 幾丁寡糖 0.2%。</li>
+              <li>粉體工程：阿拉伯膠 0.4% + SiO2 0.6%（抗結塊）。</li>
+              <li>適口：黑水虻水解物 0.8% + 蟋蟀粉 0.2%（低量香源）。</li>
+            </ul>
+          </Section>
+        );
+
+      case categories[5]: // 必須移除
+        return (
+          <Section title="⛔ 必須移除">
+            <ul className="list-disc ml-5 space-y-1">
+              {[
+                "初乳蛋白（牛初乳）",
+                "牛肉萃取物 / 動物性膠原 / 鯊魚軟骨",
+                "乳糖（爬蟲乳糖酶不足）",
+                "棕櫚油 / MCT（非日用必要）",
+                "甘油（吸濕結塊、輕瀉）",
+                "優酪乳發酵菌：S. thermophilus、L. d. bulgaricus（定殖證據弱）",
+              ].map((x,i)=> <li key={i}><DangerText>⛔ {x}</DangerText></li>)}
+            </ul>
+          </Section>
+        );
+
+      case categories[6]: // 必須新增
+        return (
+          <Section title="✅ 必須新增">
+            <ul className="list-disc ml-5 space-y-1">
+              {[
+                "孢子型益生菌（B. subtilis / B. licheniformis / B. coagulans）",
+                "多酶合劑（特別：幾丁質酶）",
+                "低糖益生元（FOS / MOS / 幾丁寡糖）",
+                "粉體工程（阿拉伯膠 + SiO2）",
+                "電解質/碳酸鈣（可做加購/聯名品）",
+              ].map((x,i)=> <li key={i}>✅ {x}</li>)}
+            </ul>
+          </Section>
+        );
+
+      case categories[7]: // 建議搭配保健品
+        return (
+          <Section title="🧰 建議所有特寵爬蟲另外搭配保健品">
+            <Table
+              cols={["類別", "代表物種", "建議保健品", "備註"]}
+              rows={[
+                ["昆蟲食/雜食蜥蜴", "豹紋守宮/鬃獅蜥/藍舌蜥", "D3鈣粉、綜合維生素（低A油劑）、電解質包、UVB照明", "餌蟲 gut‑load 必做"],
+                ["草食龜/鬣蜥", "蘇卡達/紅腿/綠鬣蜥", "高鈣粉（可不含D3視UVB）、維生素K/E、益生元纖維", "避免動物蛋白⛔"],
+                ["蛇（肉食）", "球蟒/王蛇/玉米蛇", "電解質（換皮/緊迫）、omega‑3（低量）", "每餐法：0.2 g/100 g 獵物"],
+                ["兩棲/其他特寵", "箭毒蛙/刺蝟/蜜袋鼯", "電解質、維礦、纖維益生元", "蜜袋鼯注意鈣磷比⚠️"],
+              ]}
+            />
+          </Section>
+        );
+
+      case categories[8]: // 劑量與使用
+        return (
+          <>
+            <Section title="🗒️ 日常用量">
+              <p className="mb-2">規則：{dosing.daily.rule}</p>
+              <Table cols={["物種/體重", "日量"]} rows={dosing.daily.examples.map(e => [e.species, e.dose])} />
+            </Section>
+            <Section title="🍽️ 按餐（蛇類）">
+              <p className="mb-2">規則：{dosing.perMeal.rule}</p>
+              <Table cols={["場景", "每餐用量"]} rows={dosing.perMeal.examples.map(e => [e.species, e.dose])} />
+            </Section>
+            <Section title="⚠️ 使用注意">
+              <ul className="list-disc ml-5 space-y-1">
+                {dosing.timing.map((t, i) => <li key={i}>⚠️ {t}</li>)}
+                <li>開封後 90 天最佳；避高溫與濕氣。</li>
+                <li>嚴重腹瀉/拒食&gt;7–10天/血便/呼吸異常 → 立即就醫 ⛑️</li>
+              </ul>
+            </Section>
+          </>
+        );
+
+      case categories[9]: // 疾病風險對照
+        return (
+          <Section title="🩺 疾病風險 × 配方要點">
+            <Table cols={["疾病", "主要成因", "配合品", "本配方支援"]}
+                   rows={risks.map(r => [r.disease, r.cause, r.formulaLink, r.support])} />
+          </Section>
+        );
+
+      case categories[10]: // 劑型與適口性
+        return (
+          <Section title="🧯 劑型與適口性">
+            <Table cols={["劑型", "優點", "限制"]}
+                   rows={forms.map(f => [f.form, f.pros.join("、"), f.cons.join("、")])} />
+            <p className="mt-3">挑嘴成因：溫度/光週期、餌料氣味、餐後不適（脹/硬）⚠️。對策：低味衝擊、天然香源、幾丁質酶+蛋白酶、少量多次適應。</p>
+          </Section>
+        );
+
+      case categories[11]: // 圖表與資料集
+        return (
+          <Section title="📊 Datasets（可交給 Chart.js）">
+            <pre className="bg-black/40 p-3 rounded-lg overflow-x-auto text-xs">{JSON.stringify(datasets, null, 2)}</pre>
+            <p className="mt-2">圖表可於前端以 <code>datasets</code> 餵給 Bar/Line。</p>
+          </Section>
+        );
+
+      case categories[12]: // SWOT
+        return (
+          <Section title="🧠 SWOT（S/W 內部；O/T 外部）">
+            <Table
+              cols={["S ✅ 強項", "W ⚠️ 弱點", "O 📈 機會", "T 🛡️ 威脅"]}
+              rows={[[
+                "孢子+多酶+低糖益生元；SNK L. plantarum 旗艦；DUST 易用；末端CFU保證",
+                "即時肉香誘食較低；成本/控濕要求高",
+                "特寵成長、教育內容驅動；可與鈣/UVB 打包",
+                "低價通用益生菌競爭；法規宣稱邊界；原料供應波動",
+              ]]}
+            />
+          </Section>
+        );
+
+      case categories[13]: // 參考來源
+        return (
+          <Section title="🔗 參考來源（全部網址；去重）">
+            <ul className="list-disc ml-5 space-y-1">
+              {references.map((r, i) => (
+                <li key={i}><a className="underline" href={r.url} target="_blank" rel="noreferrer">{r.url}</a> — {r.note}</li>
+              ))}
+            </ul>
+          </Section>
+        );
+
+      default:
+        return null;
+    }
+  }, [tab]);
+
+  return (
+    <div className="min-h-screen w-full" style={{
+      background: "radial-gradient(1200px 600px at 70% -10%, rgba(120,60,255,0.25), transparent), radial-gradient(900px 500px at 10% 20%, rgba(0,150,255,0.2), transparent), #0b0326",
+      color: "#e6e6ff",
+      fontFamily: "ui-rounded, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto",
+    }}>
+      {/* 頂部分頁（最上方） */}
+      <header className="sticky top-0 z-50 backdrop-blur bg-[#0b0326]/80 border-b border-white/10">
+        <div className="mx-auto max-w-screen-md px-3 py-2 flex gap-2 overflow-x-auto">
+          {categories.map((c) => (
+            <button
+              key={c}
+              onClick={() => setTab(c)}
+              className={`whitespace-nowrap px-3 py-2 rounded-xl border text-xs font-bold transition ${tab===c?"bg-pink-600 text-white border-pink-400":"bg-white/10 hover:bg-white/20 border-white/20"}`}
+            >{c}</button>
+          ))}
+        </div>
+      </header>
+
+      {/* 內容區 */}
+      <main className={`mx-auto ${mobileWidth?"max-w-[430px]":"max-w-screen-md"} px-3 ${compact?"py-3":"py-6"}`}>
+        <h1 className="text-2xl font-black mb-3 tracking-wide">🛰️ Repti‑Pro 全方位每日益生菌｜行動版研究頁</h1>
+        {page}
+      </main>
+
+      {/* 底部功能列（最下方） */}
+      <footer className="sticky bottom-0 z-50 backdrop-blur bg-[#0b0326]/90 border-t border-white/10">
+        <div className="mx-auto max-w-screen-md px-3 py-2 grid grid-cols-3 gap-2">
+          <button onClick={()=>setCompact(!compact)} className="px-3 py-2 rounded-xl font-bold bg-blue-700 hover:bg-blue-600">🧱 排版：{compact?"緊湊":"寬鬆"}</button>
+          <button onClick={()=>setMobileWidth(!mobileWidth)} className="px-3 py-2 rounded-xl font-bold bg-green-700 hover:bg-green-600">📱 視窗：{mobileWidth?"手機寬":"桌面寬"}</button>
+          <a href="#top" className="px-3 py-2 rounded-xl font-bold text-center bg-red-700 hover:bg-red-600">🔝 回頂</a>
+        </div>
+      </footer>
+    </div>
+  );
+}
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(App));
+    </script>
+  </body>
+</html>

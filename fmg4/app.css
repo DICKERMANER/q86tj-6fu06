@@ -1,0 +1,92 @@
+:root{
+  --bg:#0b0c12; --panel:#141620; --elev:#0f1020; --text:#e9ebff; --muted:#a7abbd;
+  --accent:#88a8ff; --accent2:#c691ff; --border:#25283a;
+  --radius:14px; --shadow:0 12px 30px rgba(0,0,0,.35);
+  --fs:16px;         /* 字體基準：JS 會調整 */
+  --imgScale:1;      /* 圖片縮放：JS 會調整 */
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:linear-gradient(180deg,#0b0c12 0,#0c0d18 60%,#0c0d14 100%);color:var(--text);font:400 var(--fs)/1.6 Inter,system-ui,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+a{color:var(--accent);text-decoration:none} a:hover{opacity:.9}
+
+.topbar{position:sticky;top:0;z-index:10;background:rgba(15,16,28,.7);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.topbar-inner{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .dot{inline-size:12px;block-size:12px;border-radius:50%;background:linear-gradient(120deg,var(--accent),var(--accent2))}
+.brand .title{font-weight:700}
+.view-dock,.zoom-dock{display:flex;gap:6px;align-items:center}
+.chip{background:#0f1020;border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:999px;cursor:pointer}
+.chip.active{outline:2px solid var(--accent);border-color:var(--accent)}
+.chip:disabled{opacity:.5;cursor:not-allowed}
+code{background:#0f1020;border:1px solid var(--border);padding:.15em .4em;border-radius:8px}
+
+.shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:50px;align-self:start;block-size:calc(100vh - 50px);overflow:auto;background:#0f111a;border-right:1px solid var(--border);padding:12px}
+.nav{display:flex;flex-direction:column;gap:8px}
+.navlink{display:block;padding:10px 12px;border-radius:10px;border:1px solid transparent}
+.navlink:hover{background:#0f1220;border-color:var(--border)}
+.navlink.active{background:#0e1322;border-color:var(--border)}
+.meta{margin-top:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+.tag{border:1px solid var(--border);padding:4px 8px;border-radius:999px}
+
+.content{padding:18px 18px 72px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin:0 0 16px}
+h2{margin:0 0 6px;font-size:1.15rem}
+.muted{color:var(--muted)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{position:sticky;top:0;background:#0f1020;text-align:left}
+.cards{display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0 0;padding:0;list-style:none}
+.bullets{margin:8px 0 0}
+.btnrow{margin-top:10px}
+.chart-wrap{margin-top:10px}
+
+.tree{display:block;border:1px solid var(--border);border-radius:12px;padding:10px}
+.tree details{padding:6px 8px;border-radius:8px}
+.tree details:hover{background:#0f1120}
+.tree summary{cursor:pointer}
+.tree small{color:var(--muted)}
+
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.swot > div{border:1px solid var(--border);border-radius:12px;padding:12px;background:#0f1020}
+.swot h3{margin:2px 0 8px;font-size:1rem}
+
+.swipehint{position:fixed;inset:auto 0 8px 0;display:flex;justify-content:center;pointer-events:none;color:#b9c2ff;font-size:.85rem;opacity:.65}
+
+.content img{transform:scale(var(--imgScale));transform-origin:top left;max-inline-size:100%;block-size:auto}
+
+/* Mobile */
+@media (max-width: 1000px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:static;block-size:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .content{padding:12px 12px 82px}
+  .cards{grid-template-columns:1fr}
+  .swot{grid-template-columns:1fr}
+}
+/* 頂欄按鈕在小螢幕自動換行，或可橫向滑動 */
+.view-dock, .zoom-dock, .mode-dock{
+  display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+  overflow-x:auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+}
+.view-dock::-webkit-scrollbar, .zoom-dock::-webkit-scrollbar, .mode-dock::-webkit-scrollbar{ display:none }
+
+/* 手機字距、折行優化 */
+body{ word-break: break-word; }
+h2{ line-height:1.35; }
+
+/* 超小螢幕精簡尺寸 */
+@media (max-width: 430px){
+  :root{ --fs:15px; }
+  .chip{ padding:5px 9px; }
+  .brand .title{ font-size:0.95rem }
+}
+
+/* 強制模式：.mode-mobile / .mode-desktop 會覆蓋自動排版 */
+body.mode-mobile .shell{ grid-template-columns:1fr !important; }
+body.mode-mobile .sidebar{ position:static; height:auto; border-right:none; border-bottom:1px solid var(--border); }
+body.mode-desktop .shell{ grid-template-columns:280px 1fr !important; }
+body.mode-desktop .sidebar{ position:sticky; top:50px; height:calc(100vh - 50px); }
+
+/* 讓主要內容和頂欄有保留距離，捲動時不會被遮住 */
+.panel{ scroll-margin-top:72px; }
