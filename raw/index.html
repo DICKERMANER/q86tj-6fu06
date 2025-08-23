@@ -444,12 +444,29 @@ function App() {
         {page}
       </main>
 
-      {/* 底部功能列（最下方） */}
+           {/* 底部功能列（最下方） */}
       <footer className="sticky bottom-0 z-50 backdrop-blur bg-[#0b0326]/90 border-t border-white/10">
-        <div className="mx-auto max-w-screen-md px-3 py-2 grid grid-cols-3 gap-2">
-          <button onClick={()=>setCompact(!compact)} className="px-3 py-2 rounded-xl font-bold bg-blue-700 hover:bg-blue-600">🧱 排版：{compact?"緊湊":"寬鬆"}</button>
-          <button onClick={()=>setMobileWidth(!mobileWidth)} className="px-3 py-2 rounded-xl font-bold bg-green-700 hover:bg-green-600">📱 視窗：{mobileWidth?"手機寬":"桌面寬"}</button>
-          <a href="#top" className="px-3 py-2 rounded-xl font-bold text-center bg-red-700 hover:bg-red-600">🔝 回頂</a>
+        <div className="mx-auto max-w-screen-md px-3 py-2 grid grid-cols-4 gap-2">
+          <a
+            href="https://dickermaner.github.io/q86tj-6fu06/#view=table"
+            className="px-3 py-2 rounded-xl font-bold text-center bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
+            aria-label="返回首頁"
+          >🏠 首頁</a>
+
+          <button
+            onClick={()=>setCompact(!compact)}
+            className="px-3 py-2 rounded-xl font-bold bg-blue-700 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
+          >🧱 排版：{compact?"緊湊":"寬鬆"}</button>
+
+          <button
+            onClick={()=>setMobileWidth(!mobileWidth)}
+            className="px-3 py-2 rounded-xl font-bold bg-green-700 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400"
+          >📱 視窗：{mobileWidth?"手機寬":"桌面寬"}</button>
+
+          <a
+            href="#top"
+            className="px-3 py-2 rounded-xl font-bold text-center bg-red-700 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400"
+          >🔝 回頂</a>
         </div>
       </footer>
     </div>
