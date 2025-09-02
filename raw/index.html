@@ -3,11 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>特寵全方位益生菌保健粉｜研究整理網站（純 HTML 版）</title>
-  <!-- Tailwind CDN：免建置即可使用 -->
+  <title>米知毛研・特寵全方位益生菌</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 小元件：Chip */
     .chip{display:inline-flex;align-items:center;border-radius:9999px;padding:.125rem .5rem;font-size:.75rem;font-weight:600;border-width:1px}
     .chip-emerald{color:rgb(52,211,153);border-color:rgba(16,185,129,.4)}
     .chip-amber{color:rgb(251,191,36);border-color:rgba(245,158,11,.4)}
@@ -16,20 +14,16 @@
     .chip-rose{color:rgb(244,63,94);border-color:rgba(244,63,94,.4)}
     .chip-sky{color:rgb(56,189,248);border-color:rgba(14,165,233,.4)}
     .chip-neutral{color:rgb(163,163,163);border-color:rgba(115,115,115,.4)}
-    /* 文章內容樣式微調 */
     .prose h4{margin-bottom:.25rem}
+    .kbd{display:inline-block;border:1px solid rgba(255,255,255,.25);border-radius:.5rem;padding:.125rem .375rem;font-size:.75rem}
   </style>
 </head>
 <body class="min-h-screen antialiased bg-black text-white">
-  <!-- 頂部列 -->
-  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/40 dark:bg-black/40 border-b border-white/10">
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/40 border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-      <span class="font-semibold">米知毛研-特寵全方位益生菌保健粉｜研究整理網站</span>
+      <span class="font-semibold">米知毛研・特寵全方位益生菌</span>
       <div class="ml-auto flex items-center gap-2">
-        <a href="https://dickermaner.github.io/q86tj-6fu06/#view=table"
-   class="px-3 py-1 rounded-full border border-current/30 hover:bg-white/10 transition text-sm">
-  ⬅️ 回首頁
-</a>
+        <a href="https://dickermaner.github.io/q86tj-6fu06/#view=table" class="px-3 py-1 rounded-full border border-current/30 hover:bg-white/10 transition text-sm">⬅️ 回首頁</a>
         <button id="btn-theme" class="px-3 py-1 rounded-full border border-current/30 hover:bg-white/10 transition text-sm" title="切換黑/白主題">🌙 深色</button>
         <div class="inline-flex rounded-full overflow-hidden border border-current/30 text-sm">
           <button id="btn-desktop" class="px-3 py-1 bg-white/10">🖥️ 電腦版</button>
@@ -39,47 +33,44 @@
     </div>
   </header>
 
-  <!-- 版面 -->
   <main class="max-w-7xl mx-auto px-3 md:px-6 py-6">
     <div id="preview-wrap" class="mx-auto transition-all">
       <div class="relative">
         <div class="hidden md:block w-[280px] shrink-0"></div>
 
-        <!-- 固定側欄 -->
         <nav class="hidden md:block fixed top-20 bottom-10 w-[280px] overflow-auto rounded-2xl p-3 border border-current/20">
-          <div class="font-bold mb-2">📚 內容導覽</div>
+          <div class="font-bold mb-2">📚 展場導覽</div>
           <ul id="toc" class="space-y-1"></ul>
           <div class="mt-4 text-xs opacity-70">
             標記：
             <span class="chip chip-emerald">菌株</span>
             <span class="chip chip-sky">蛋白</span>
             <span class="chip chip-amber">酵素</span>
-            <span class="chip chip-rose">植藥</span>
+            <span class="chip chip-rose">植萃</span>
             <span class="chip chip-violet">維生素</span>
             <span class="chip chip-neutral">賦形</span>
           </div>
         </nav>
 
-        <!-- 內容 -->
         <section class="md:ml-[296px] rounded-2xl p-4 md:p-6 border border-current/20 overflow-y-auto isolate relative max-h-[calc(100vh-180px)]">
           <h2 id="title" class="text-2xl md:text-3xl font-black mb-4 leading-tight"></h2>
           <article id="highlights" class="prose prose-invert max-w-none break-words"></article>
           <div class="my-4"></div>
 
-          <!-- 原文逐字區 -->
+          <!-- 詳細成分介紹（摺疊） -->
           <details class="group border border-current/20 rounded-2xl overflow-hidden">
             <summary class="cursor-pointer list-none px-4 py-2 bg-current/5 hover:bg-current/10 font-semibold flex items-center gap-2">
-              <span>📄 原文逐字（點開） — <span id="raw-title"></span></span>
-              <span class="ml-auto text-xs opacity-70">逐字，但允許斷行與標點微調以便閱讀</span>
+              <span id="raw-label">📄 詳細資訊</span>
+              <span class="ml-auto text-xs opacity-70">😊</span>
             </summary>
             <div class="px-4 py-3">
-              <article id="raw" class="whitespace-pre-wrap leading-relaxed text-sm md:text-base"></article>
+              <article id="raw" class="leading-relaxed text-sm md:text-base"></article>
             </div>
           </details>
 
           <div class="mt-6 flex justify-between">
-            <button id="btn-prev" class="px-3 py-2 rounded-xl border border-current/20 hover:bg-current/10">⬅️ 上一節</button>
-            <button id="btn-next" class="px-3 py-2 rounded-xl border border-current/20 hover:bg-current/10">下一節 ➡️</button>
+            <button id="btn-prev" class="px-3 py-2 rounded-xl border border-current/20 hover:bg-current/10">⬅️ 上一節 <span class="hidden md:inline kbd">J</span></button>
+            <button id="btn-next" class="px-3 py-2 rounded-xl border border-current/20 hover:bg-current/10">下一節 ➡️ <span class="hidden md:inline kbd">K</span></button>
           </div>
         </section>
       </div>
@@ -87,184 +78,286 @@
   </main>
 
   <footer class="py-8 text-center opacity-70 text-sm">
-    © <span id="year"></span> 特寵全方位益生菌｜研究整理。依據上游 PDF 研究內文整理，供教育與資訊用途。
+    © <span id="year"></span> 米知毛研・特寵全方位益生菌+綜合養分｜
   </footer>
 
   <script>
-  // ====== 原文（來自檔案，逐字不改） ======
-  const RAW_BACKGROUND = `本報告分析一款全方位益生菌+保健品粉末，針對「特殊寵物」（特寵）每日餵食使用。所謂特寵是指非犬貓的
-寵物，包括各類爬蟲類（如鬆獅蜥、守宮等蜥蜴類）、兩棲爬蟲、草食性小動物（如兔子、龍貓〈即倉鼠的一
-種稱法？但龍貓通常指南美栗鼠即「毛絲鼠」即Chinchilla〉、天竺鼠、陸龜等）、以及肉食或雜食的小型哺乳
-類（如刺蝟、蜜袋鼯、雪貂等） 。這些特殊寵物種類繁多，在臺灣等地已有超過數千種引進飼養 。產品
-定位為廣效營養補充劑：一方面通過多株益生菌維持腸道健康，另一方面添加多種營養成分（維生素、酵素、
-草本等）提供全面的健康支持。產品為粉末狀，方便混入食物或水中，每日餵食，號稱草食、肉食、雜食寵物
-皆可安心食用。`;
+  // ========= 文字原稿 =========
+  const RAW_BACKGROUND = `「特寵全方位益生菌+綜合必須養分」，非犬貓針對特寵（爬蟲、兩棲、草食小型哺乳與部分雜/肉食動物）日常保健省錢方便，免多罐。
+產品特點：以多專利、多株 <益生菌> 活菌；維持腸道菌相平衡、日常消化糞便健康、適口性，搭配適量 <維生素/專利植萃/酵素> 等綜合保健。粉末劑型，混食或混水皆可，每日或隔日餵食。
+備注：
+・「龍貓」指毛絲鼠（Chinchilla），非倉鼠；「天竺鼠」與「兔」生理需求不同。
+・爬蟲對 UVB、鈣與 D3 敏感度高，須與主食與光照搭配；本品不含鈣與纖維。`;
 
-  const RAW_NEEDS = `特殊寵物的飲食需求各異，但共同需要均衡的營養和健康的腸道環境。以下概述幾類特寵的營養重點：
+  const RAW_NEEDS = `特寵的共通需求：① 健康腸道菌相、適口 ② 適量必需營養保底（A/D/E、B 群、VitC）③ 足夠蛋白與胺基酸 ④ 安全賦形。
+草食（兔、天竺鼠、毛絲鼠、陸龜等）：⚠️<b>用量依體況、品種、體重調整</b>
+・高纖維是核心；VitA/D 與鈣攝取需穩定。天竺鼠需每日 VitC（~10 mg/kg/day）孕期 30 mg/kg/day。
+雜食（成體鬆獅蜥、蜜袋鼯、部分齧齒）：
+・日糧多元，需廣覆蓋適量營養與本產品協助消化；控制總糖份。
+肉/昆蟲食（守宮、幼體鬆獅蜥、蛇、刺蝟、雪貂等）：
+・轉場緊張、換飼或用藥期，腸道與脂溶性維生素保底有幫助；幫助鈣粉吸收（爬蟲等）。`;
 
-草食性特寵（例如兔子、天竺鼠、龍貓、陸龜、草食蜥蜴等）：以高纖維植物為食，需充足纖維維持腸道蠕動和盲腸發酵。
-天竺鼠必需維生素 C（約 10 mg/kg/day），草食爬蟲與兔類常見維生素 A、D 缺乏，且大多需要穩定的鈣攝取。
+  const RAW_APPLICABILITY = `跨物種可用的前提：用量分層 + D3 Low-D + 與主食/光照正確搭配。
+草食（龜/兔/天竺鼠/毛絲鼠）：益生菌與 B 群可穩定後腸發酵；VitA/D 作室內飼養保底；仍需高纖主食與鈣。
+雜食（成體鬆獅蜥、蜜袋鼯、部分齧齒）：適量營養廣覆蓋；避免嗜甜與過量澱粉。
+肉/昆蟲食（守宮、蛇、刺蝟、雪貂等）：壓力期、腸菌叢平衡；與鈣粉並行（爬蟲）；雪貂嚴控碳水。`;
 
-肉食/昆蟲食特寵（例如蛇類、守宮、鬆獅蜥幼體、刺蝟、雪貂等）：以高蛋白飲食為主，部分物種需從食物取得維生素 D3；
-爬蟲 UVB 不足時需 D3 及補鈣。益生菌在壓力、換環境或用藥期間可幫助消化與免疫。
+  // —— 詳細成分介紹（有換行、含色標與 emoji）——
+  const RAW_INGREDIENTS_DETAIL = `
+<div class="prose prose-invert max-w-none">
+  <h4>【益生菌菌株】</h4>
+  <p>
+    🌟 <b class="text-yellow-400">嗜酸乳桿菌 (Lactobacillus acidophilus NCFM)</b><br>
+    🌟 <b class="text-yellow-400">鼠李糖乳桿菌 (Lactobacillus rhamnosus HN001)</b><br>
+    🌟 <b class="text-yellow-400">雷特氏B菌 (Bifidobacterium lactis HN019)</b><br>
+    <b>副乾酪乳桿菌 (Lactobacillus paracasei)</b><br>
+    <b>比菲德氏龍根菌 (Bifidobacterium longum)</b><br>
+    <b>植物乳桿菌 (Lactobacillus plantarum Lp-115)</b><br>
+    👉 ：維持腸道菌相平衡與糞便型態，協助日常消化、適口性
+  </p>
 
-雜食性特寵（例如鬆獅蜥成年個體、蜜袋鼯、部分龜類、部分齧齒類如寵物鼠等）：飲食同時包含植物與蛋白來源，營養需求
-介於上述兩者之間。牠們通常需要廣泛的維生素與礦物質，包括脂溶性維生素 A、D、E 以及多種 B 族維生素。蜥蜴、龜類等
-爬蟲在人工飼養環境中常需要額外補充維生素 A 和 D3；蜜袋鼯需要鈣磷比例均衡並攝入水果中所缺乏的維生素；寵物鼠需要
-從多樣食材獲取維生素 B 群。益生菌有助於雜食動物消化多樣化的飼料，維持腸道菌叢平衡。
+  <h4>【蛋白/肽類】</h4>
+  <p>
+    <b>水解蛋白</b> 🐍🦔 <span class="text-emerald-400">(恢復期、食慾低落個體營養補位)</span><br>
+    <b>胜肽蛋白</b> 🦎🐇 <span class="text-emerald-400">(快速吸收胺基酸，支持成長與壓力期)</span><br>
+    <b>定序衛腸肽</b> 💚 <span class="text-emerald-400">(益生菌代謝產物，幫助腸道屏障)</span>
+  </p>
 
-總體來說，特寵普遍需要：①健康的腸道菌群；②維生素與必需營養素；③高品質蛋白與胺基酸；④安全無害的添加物。`;
+  <h4>【草本/菌菇萃取】</h4>
+  <p>
+    🌟 <b class="text-yellow-400">玄米萃取物</b> 🌾 (γ-穀維素、B群)<br>
+    🌟 <b class="text-yellow-400">蛹蟲草萃取物</b> 🍄 (多醣、核苷類，支持能量與免疫)<br>
+    🌟 <b class="text-yellow-400">蔬果酵素萃取</b> 🍍 (木瓜酵素/鳳梨酵素，幫助消化)<br>
+    <b>枸杞粉</b> 🍒 (抗氧化、眼部保健)<br>
+    <b>茯苓粉</b> 🌰 (利水健脾，消化支持)<br>
+    <b>丹參萃取物</b> 🌿 (循環與抗氧化)
+  </p>
 
-  const RAW_INGREDIENTS = `產品標示的主要成分包括：水解蛋白、多株專利益生菌、多種專利益生菌代謝產物或配方（如定序衛腸肽）、
-專利穀物及菌菇萃取（玄米萃取、蛹蟲草萃取）、胜肽蛋白、專利蔬果酵素萃取、以及多種草本及營養補給成分（枸杞粉、茯苓粉、
-綜合維生素、丹參萃取物）和賦形劑（硬脂酸鎂、二氧化矽、麥芽糊精）。各成分作用分析如下：
+  <h4>【綜合維生素】</h4>
+  <p>
+    <b>維生素C</b> 🍊🐭🐹 <span class="text-rose-400">(天竺鼠必需，缺乏會壞血病)</span><br>
+    <b>維生素D3</b> ☀️🦎🐢 <span class="text-amber-300">(爬蟲鈣吸收必需)</span><br>
+    <b>維生素A</b> 👀🦜 <span class="text-amber-300">(視覺與上皮健康，鳥類/爬蟲常見缺乏)</span><br>
+    <b>維生素E</b> 💪 (抗氧化，生殖健康)<br>
+    <b>維生素B群 (B1, B2, B6, B12, 菸鹼醯胺/葉酸/生物素)</b> ⚡ (能量代謝、神經與造血)
+  </p>
 
-【益生菌菌株】含 Lactobacillus acidophilus NCFM®、L. rhamnosus HN001、Bifidobacterium lactis HN019、L. paracasei、
-Bifidobacterium longum、L. plantarum Lp-115。NCFM 能耐胃酸膽鹽並定殖小腸；HN001 與 HN019 組合可促進腸蠕動與免疫。
-雙歧桿菌偏大腸、乳桿菌偏小腸，協同抑制病菌並提升定殖成功率（如 rhamnosus 與 plantarum 能降低大腸桿菌黏附）。
+  <h4>【賦形】</h4>
+  <p>硬脂酸鎂、二氧化矽、麥芽糊精 （品質穩定，確保粉末流動性與保存性）</p>
 
-【水解蛋白與胜肽】提供易吸收蛋白來源，降低過敏性，對於恢復期或需增重個體有幫助；草食動物以植物蛋白為主，少量小分子
-胜肽可作營養補位。
+  <hr class="my-3 border-white/10">
+  <h4>📌 物種對應</h4>
+  <ul class="list-disc ml-6">
+    <li>🐭🐹 <b>天竺鼠/齧齒</b> → 特別需要 <b class="text-rose-400">維生素C</b>，避免壞血病</li>
+    <li>🦎🐢 <b>爬蟲類</b> → 仰賴 <b class="text-amber-300">維生素D3</b>啟動腸道鈣吸收的開關，避免代謝性骨病；讓補充鈣粉真正被吸收利用</li>
+    <li>🐇 <b>兔子/草食性特寵</b> → 需要高纖維，但本品可補 <b class="text-emerald-400">B群與益生菌</b> 穩定後腸發酵</li>
+    <li>🦔🐍 <b>刺蝟/蛇/食蟲或肉食特寵</b> → <b class="text-emerald-400">水解蛋白/胜肽</b> 提供易吸收養分，轉場或壓力期特別有用</li>
+    <li>🦜 <b>鸚鵡/鳥類</b> → 常缺 <b class="text-amber-300">維生素A</b>，補充有助羽毛與眼睛健康</li>
+  </ul>
+</div>`;
 
-【蔬果酵素萃取】可能包含木瓜酵素與鳳梨酵素等，幫助分解蛋白/脂肪/碳水，減少消化負擔；搭配益生菌亦可能帶來益生元效果。
+  // — 使用方式 —
+  const RAW_USAGE = `如何使用（依食性分組）：
+草食 🐇🐢：每週 3 次，適量均勻撒在葉菜/牧草上；與鈣粉可同時使用。換食或轉場期可暫增至每週 4–5 次。
+雜食 🦎🐭：每週 2–3 次，混在主食昆蟲、果泥或濕糧；避免與高糖零食同時。
+肉/昆蟲食 🐍🦦：每週 2–3 次，輕覆於昆蟲或肉塊表面；轉場、脫皮或用藥期可視情況加 1 次。
 
-【草本與菌菇】玄米萃取富含 γ-穀維素與 B 群，具抗氧化與潛在益生元；蛹蟲草(C. militaris) 含蟲草素與多醣體，具免疫調節與
-抗疲勞；枸杞提供 β-胡蘿蔔素與抗氧化物；茯苓多醣與三萜健脾利濕；丹參含酚酸與醌類，具活血抗炎抗氧化價值。
+為什麼需要：
+・建立與維持腸道菌叢平衡，減少轉場/壓力造成的排便異常與食慾波動
+・補位日糧中常見缺口（A/D/E、B 群、VitC），強化日常適應力
+・粉末使用方便以及、維生素D3與鈣粉/電解質相容（「鈣結合蛋白 (calbindin)腸道能主動把鈣離子進入血液）、不增加餵食負擔
 
-【維生素與綜合營養素】涵蓋 C、E、B6、B2、B1、菸鹼醯胺、A、D3、B12、葉酸、生物素等。A 與 D3 對爬蟲尤重要；C 對天竺鼠必需；
-E 抗氧化保護；B 群參與能量與神經功能。
+貼心提醒：
+・與抗生素請錯開 ≥ 2 小時；保存避免高溫潮濕；實際用量依物種與體況由現場人員評估`;
 
-【賦形劑】硬脂酸鎂潤滑、二氧化矽抗結塊、麥芽糊精為載體。麥芽糊精屬高 GI，長期應控制總量（雪貂等嗜糖敏感者特別注意）。`;
+ const RAW_CONCLUSION = `重點分析：
+・本產品：以 <活菌> ＋ <必須營養素> 為核心，免瓶瓶罐罐
+・便利性/注意事項：本產品粉末狀+主食可適用於活體、飼料、菜葉等；但因 D3 鈣粉無法天天使用故需自行搭配（依照品種鈣粉或UVB）
+・日常營養補充與餵食便利性提升；配合主食/UVB/鈣粉，支持日常狀態維持、必需養分補充
+`;
 
-  const RAW_APPLICABILITY = `本產品聲稱「爬蟲、草食、肉食、雜食皆適用」，確實其成分考量了多種動物的共通需求。然而，由於不同寵
-物在生理上的差異，我們依其食性和類別逐一評估：
 
-草食性爬蟲類（如綠鬣蜥、象龜等）和草食性小哺乳類（如兔子、天竺鼠、龍貓等）：
-這些動物以植物為主食，特點是高纖維需求、維生素礦物易缺乏。本產品對牠們的優勢在於：
-補充維生素：提供 VitA、VitD3 對室內飼養、缺乏陽光和多樣蔬菜的草食寵物非常必要；VitA 能避免眼鼻黏膜問題，VitD3 則防止骨骼軟化。
-維生素 B 群、有益菌也有助於提高食物利用率，因為兔子等後腸發酵動物在腸道菌受損時會食慾不振，補充 B 群和益生菌能恢復腸蠕動。
-維持腸道健康：益生菌（如乳酸桿菌、雙歧桿菌）對兔、鼠等草食哺乳類的腸道至關重要，可防止有害菌過度繁殖導致的脹氣腹瀉。
+  const RAW_REFS = `參考資料（連結）：
+Zoo Med ReptiVite with D3（官方）
+Repashy Calcium Plus（官方商店）
+Arcadia EarthPro-A（官方）
+Merck Vet Manual｜Rodents & Lagomorphs（含 Guinea pig VitC）
+Merck Vet Manual｜Guinea Pigs（專章）
+OptiBac｜NCFM®、HN001
+PMC 綜述｜B. lactis HN019
+Basic & Applied Zoology（抗黏附/協同）`;
 
-雜食類（成體鬆獅蜥、蜜袋鼯、部分齧齒）：廣泛微量營養與益生菌處理多元日糧；避免嗜甜與過量澱粉。
-
-肉/昆蟲食（守宮、鬆獅蜥幼體、蛇、雪貂等）：壓力期腸道重建與脂溶性維生素保底；昆蟲灑鈣仍為必要；對雪貂須監控碳水。`;
-
-  const RAW_CONCLUSION = `綜合以上分析，這款特寵全方位益生菌營養粉在配方上覆蓋了特殊寵物健康所需的多個層面，具有以下優點：
-
-益生菌+營養素雙效合一：多株專利益生菌為特寵建立堅實的腸道屏障，提升消化與免疫；搭配的維生素、胜肽和草本萃取則全面加強體質、
-預防常見缺素疾病。
-針對特寵需求設計：成分選擇考慮了各類特寵的共同點和差異點。例如，添加 VitC 照顧到天竺鼠需要，VitA/D3 針對爬蟲需要，蟲草、丹參
-等提振免疫適合所有易緊迫的小動物。產品不含過多熱量，避免了不相關成分。
-高安全性與便利性：配方天然無害，未見人工防腐劑、香料等潛在危險物，對廣泛物種都相對安全。粉末狀劑型方便混餵，寵物接受度高。`;
-
-  const RAW_REFS = `參考資料（附上網址）：
-- Zoo Med ReptiVite with D3（官方）
-- Repashy Calcium Plus（官方商店）
-- Arcadia EarthPro-A（官方）
-- Merck Vet Manual｜齧齒與兔營養（含天竺鼠 VitC）
-- Merck Vet Manual｜Guinea Pigs（專章）
-- OptiBac 專頁：NCFM®、HN001
-- PMC 綜述：B. lactis HN019
-- Basic & Applied Zoology（抗黏附/協同）`;
-
-  // ====== 強調區（逐字搬運，不改語意/用詞） ======
+  // ========= Highlights 區塊 =========
   function HighlightsBackground(){
     return `
       <div class="space-y-3">
-        <p>本頁聚焦 <b>爬蟲＋草食＋雜/肉食</b> 特寵的日常保健底座：<span class="chip chip-emerald">多株專利益生菌</span> + <span class="chip chip-violet">維生素微量</span> + <span class="chip chip-rose">植藥/萃取</span>。</p>
+        <p>特寵專用全方位保健 <b>爬蟲＋草食＋雜/肉食</b> 等，日常保健益生菌+多種必需養分：<span class="chip chip-emerald">多株專利益生菌（活菌）</span> + <span class="chip chip-violet">綜合必需維生素</span> + <span class="chip chip-rose">專利植萃/酵素等</span>。</p>
         <ul class="list-disc ml-6">
-          <li>🎯 目標：腸道穩定、營養補位、壓力期支持。</li>
-          <li>🆚 物種差異：<b>A/D3/鈣/纖維</b> 代謝差距大，需 <b>低 D3</b> 與 <b>劑量分層</b>。</li>
-          <li>⚠️ 本品不含鈣與纖維，<b>🦎 需灑鈣</b>、<b>草食需高纖</b>。</li>
+          <li>🎯 目的：維持腸道菌相平衡與糞便型態，協助日常消化與適口性、養分一次補充、免瓶瓶罐罐。</li>
+          <li>⚠️ 本品不含鈣與纖維，<b>🦎 需自行補充D3鈣或UVB</b>、<b>草食需高纖主食</b>。</li>
         </ul>
       </div>
     `;
   }
+
   function HighlightsNeeds(){
     return `
       <div class="grid md:grid-cols-3 gap-4">
         <div class="rounded-2xl p-4 border border-current/20">
           <h4 class="font-semibold">草食 🐇🐢</h4>
           <ul class="list-disc ml-6">
-            <li>⭕ 高纖維、穩定鈣攝取、VitA/D 與 <span class="chip chip-emerald">益生菌</span>。</li>
-            <li>⚠️ 牧草/葉菜為主食，營養粉僅作補位。</li>
+            <li>⭕ 必需養分、VitA/D 與 <span class="chip chip-emerald">益生菌</span>。</li>
+            <li>⚠️ 牧草/葉菜為主食。</li>
           </ul>
         </div>
         <div class="rounded-2xl p-4 border border-current/20">
           <h4 class="font-semibold">雜食 🦎🐭</h4>
           <ul class="list-disc ml-6">
-            <li>✅ 廣覆蓋微量營養；<span class="chip chip-amber">酵素</span> 降解多元日糧。</li>
-            <li>⚠️ 控制總糖與熱量。</li>
+            <li>✅ 必需養分廣覆蓋；<span class="chip chip-amber">酵素</span> 降解多元日糧。</li>
+            <li>⚠️ 主食/零食控制總糖與熱量。</li>
           </ul>
         </div>
         <div class="rounded-2xl p-4 border border-current/20">
-          <h4 class="font-semibold">肉/昆蟲食 🐍🦎🦦</h4>
+          <h4 class="font-semibold">肉/昆蟲食 🐍🦦</h4>
           <ul class="list-disc ml-6">
-            <li>✅ 壓力期腸道重建；脂溶性維生素保底。</li>
-            <li>⚠️ 昆蟲灑鈣持續；雪貂注意碳水。</li>
+            <li>✅ 壓力期腸菌叢平衡；脂溶性維生素補充。</li>
+            <li>⚠️  主食/零食控制脂肪量；昆蟲、爬蟲另外補充d3鈣粉（因D3 鈣粉過量會造成高鈣血症，導致腎臟與軟組織鈣化）；雪貂注意碳水。</li>
           </ul>
         </div>
       </div>
     `;
   }
+
+  // —— 上方：一行「成分：……」專利金黃，不換行 ——
   function HighlightsIngredients(){
-    return `
-      <div class="space-y-4">
-        <div class="rounded-2xl p-4 border border-current/20">
-          <h4 class="font-semibold">益生菌（株號要清楚）</h4>
-          <ul class="list-disc ml-6">
-            <li><span class="chip chip-emerald">NCFM</span>、<span class="chip chip-emerald">HN001</span>、<span class="chip chip-emerald">HN019</span>、<span class="chip chip-emerald">Lp-115</span>、<span class="chip chip-emerald">B. longum</span>、<span class="chip chip-emerald">L. paracasei</span>（⚠️建議標 <b>Lpc-37</b>）。</li>
-            <li>標示 <b>到期 CFU</b> 與 <b>與抗生素錯開 ≥ 2 小時</b>。</li>
-          </ul>
-        </div>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="rounded-2xl p-4 border border-current/20">
-            <h4 class="font-semibold">基底/酵素/植藥</h4>
-            <ul class="list-disc ml-6">
-              <li><span class="chip chip-sky">水解蛋白/胜肽</span>：易吸收、作補位。</li>
-              <li><span class="chip chip-amber">蔬果酵素</span>：助消化，低量長期。</li>
-              <li><span class="chip chip-rose">玄米/蛹蟲草/枸杞/茯苓/丹參</span>：抗氧化與免疫調節。</li>
-            </ul>
-          </div>
-          <div class="rounded-2xl p-4 border border-current/20">
-            <h4 class="font-semibold">維生素/賦形</h4>
-            <ul class="list-disc ml-6">
-              <li><span class="chip chip-violet">A/D3/E/C/B 群/葉酸/生物素/B12</span>：<b>低至中劑量</b>日補。</li>
-              <li><span class="chip chip-neutral">二氧化矽/硬脂酸鎂/麥芽糊精</span>：常規安全，控制總糖。</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    `;
+    const FLAT = `
+      <p class="leading-relaxed">
+        <b>成分：</b>
+        水解蛋白、專利益生菌（
+          <b class="text-yellow-400">🌟 嗜酸乳桿菌 NCFM</b>、
+          <b class="text-yellow-400">🌟 鼠李糖乳桿菌 HN001</b>、
+          <b class="text-yellow-400">🌟 雷特氏B菌 HN019</b>、
+          副乾酪乳桿菌、
+          比菲德氏龍根菌、
+          植物乳桿菌 Lp-115
+        ）、定序衛腸肽、
+        <b class="text-yellow-400">🌟 專利玄米萃取物</b>、
+        <b class="text-yellow-400">🌟 專利蛹蟲草萃取物</b>、
+        胜肽蛋白、
+        <b class="text-yellow-400">🌟 專利蔬果酵素萃取</b>、
+        枸杞粉、茯苓粉、
+        綜合維生素（維生素C、維生素E、維生素B6、維生素B2、菸鹼醯胺、維生素B1、維生素A、維生素D3、維生素B12、葉酸、生物素）、
+        丹參萃取物、硬脂酸鎂、二氧化矽、麥芽糊精
+      </p>`;
+    return `<div class="prose prose-invert max-w-none">${FLAT}</div>`;
   }
+
   function HighlightsApplicability(){
     return `
       <div class="space-y-2">
         <ul class="list-disc ml-6">
-          <li>✅ 一罐通用可行，但 <b>🦎鈣</b> 與 <b>草食高纖</b> 必須由日糧補足。</li>
-          <li>⚠️ D3 採 <b>Low-D</b> 策略以跨物種安全，並明確劑量分層。</li>
+          <li>✅ 一罐顧全身，依照品種只需額外搭配<b>🦎D3鈣粉/uvb</b> 等 <b></b> 即可。</li>
+          <li>⚠️ 維生素D3非鈣粉，是幫助鈣粉完整吸收 <b>需自行補充</b> D3鈣粉或UVB</li>
         </ul>
       </div>
     `;
   }
+
+  function HighlightsUsage(){
+    return `
+      <div class="space-y-5">
+        <div class="rounded-2xl p-4 border border-current/20">
+          <div class="font-semibold mb-2">在台灣/亞太常見、支援的物種（展示口徑）</div>
+          <div class="flex flex-wrap gap-2 text-sm">
+            <span class="chip chip-emerald">🐇 兔子</span>
+            <span class="chip chip-emerald">🐹 倉鼠/寵物鼠</span>
+            <span class="chip chip-emerald">🐭 天竺鼠</span>
+            <span class="chip chip-emerald">🦫 毛絲鼠（龍貓）</span>
+            <span class="chip chip-emerald">🦎 豹紋守宮</span>
+            <span class="chip chip-emerald">🦎 鬆獅蜥</span>
+            <span class="chip chip-emerald">🐢 陸龜</span>
+            <span class="chip chip-emerald">🐍 球蟒</span>
+            <span class="chip chip-emerald">🐍 玉米蛇/王蛇</span>
+            <span class="chip chip-emerald">🦔 刺蝟</span>
+            <span class="chip chip-emerald">🦦 雪貂</span>
+            <span class="chip chip-emerald">🦘 蜜袋鼯</span>
+            <span class="chip chip-emerald">🦜 虎皮/玄鳳等小中型鸚鵡</span>
+          </div>
+          <div class="text-xs opacity-70 mt-2">※ 水族/兩棲若以水體為主食環境，建議改在餌料表面少量沾附，避免干擾水質。</div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="rounded-2xl p-4 border border-current/20">
+            <h4 class="font-semibold">草食 🐇🐢</h4>
+            <ul class="list-disc ml-6">
+              <li>每週 3 次，撒在 <b>牧草/葉菜</b>；可與鈣粉同時。</li>
+              <li>換食/轉場期可暫增至每週 4–5 次。</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl p-4 border border-current/20">
+            <h4 class="font-semibold">雜食 🦎🐭</h4>
+            <ul class="list-disc ml-6">
+              <li>每週 2–3 次，混在 <b>昆蟲、果泥或濕糧</b>；可與鈣粉同時。</li>
+              <li>避免與高糖零食同時。</li>
+              <li>轉場、脫皮、用藥期可視情況 +1 次。</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl p-4 border border-current/20">
+            <h4 class="font-semibold">肉/昆蟲食 🐍🦦</h4>
+            <ul class="list-disc ml-6">
+              <li>每週 2–3 次，輕覆於 <b>昆蟲/肉塊</b> 表面；可與鈣粉同時。</li>
+              <li>轉場、脫皮、用藥期可視情況 +1 次。</li>
+            </ul>
+          </div>
+        </div>
+
+        <details class="rounded-2xl border border-current/20">
+          <summary class="px-4 py-2 cursor-pointer font-semibold">🔎 物種使用方法（建議使用或⚠️<b>用量依體況、品種、體重調整</b>）</summary>
+          <div class="px-4 py-3 grid md:grid-cols-2 gap-3 text-sm">
+            <div class="p-3 rounded-xl border border-current/10"><b>兔子</b>：主食高纖牧草；益生菌每週 3 次可撒在葉菜，夏季換環境可加頻率。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>天竺鼠</b>：每日 VitC 另行補充；益生菌每週 3 次，搭配高纖與穩定飲水。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>毛絲鼠（龍貓）</b>：高纖低糖；益生菌每週 3 次，避免高糖載體。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>倉鼠/等寵物鼠</b>：混於濕糧少量；每週 2–3 次，控制總糖與油籽。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>爬蟲：守宮/鬆獅蜥</b>：主食昆蟲、飼料+<b>D3鈣粉或UVB（依照品種自行搭配）</b> 每週2–3 次，依照體重可適量增量。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>陸龜</b>：高纖主食＋日照/UVB是地基；益生菌每週 3 次撒在葉菜，依照體重可適量增量。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>球蟒/玉米蛇/王蛇</b>：進食日適量覆粉於餌料表面；依照體重可適量增量。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>刺蝟/雪貂</b>：主食嚴控碳水；選低糖載體，益生菌每週 2–3 次。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>蜜袋鼯</b>：鈣磷比平衡最重要；益生菌配合主食，每週 2–3 次。</div>
+            <div class="p-3 rounded-xl border border-current/10"><b>鸚鵡（虎皮/玄鳳等）</b>：以濕糧或少量拌水方式；每週 2–3 次，注意水盆衛生。</div>
+          </div>
+        </details>
+
+        <div class="rounded-2xl p-4 border border-emerald-500/40">
+          <h4 class="font-semibold">為什麼需要？</h4>
+          <ul class="list-disc ml-6">
+            <li>✅ 維持腸道菌相平衡與糞便型態，協助日常消化與適口性，降低轉場/壓力反應。</li>
+            <li>✅ 補位日糧常見缺口（A/D/E、B 群、VitC）。</li>
+            <li>✅ 與鈣粉/電解質相容（經肝腎活化成 calcitriol）會刺激腸上皮細胞產生「鈣結合蛋白 (calbindin)腸道能主動把鈣離子進入血液）。</li>
+          </ul>
+        </div>
+      </div>
+    `;
+  }
+
   function HighlightsConclusion(){
     return `
       <div class="space-y-2">
         <ul class="list-disc ml-6">
-          <li>✅ 以 <b>腸道＋微量營養</b> 為核心的日常底座成立。</li>
-          <li>🧪 植藥/酵素作輔助位，低量與品質文件（COA）並重。</li>
-          <li>❌ 不取代 <b>纖維/鈣/UVB</b> 等基礎飼養條件。</li>
+          <li>✅ 以 <b>一罐搞定所有養分</b> 只需要依照品種另行搭配一兩樣保健品例如:D3鈣粉等</li>
+          <li>🧪 植萃/酵素/活菌/維生素等取代瓶瓶罐罐。</li>
+          <li>❌ 不取代 <b>主食/纖維/鈣/UVB</b> 等基礎飼養條件。</li>
         </ul>
       </div>
     `;
   }
+
   function HighlightsRefs(){
     const links = [
       ["Zoo Med ReptiVite with D3（官方）","https://zoomed.com/reptivite-with-d3/"],
       ["Repashy Calcium Plus（官方商店）","https://www.shop.repashy.com/products/repashy-calcium-plus"],
       ["Arcadia EarthPro-A（官方）","https://arcadiareptile.com/earthpro/supplements/earthpro-a/"],
-      ["Merck Vet Manual｜齧齒與兔營養（含天竺鼠 VitC）","https://www.merckvetmanual.com/management-and-nutrition/nutrition-exotic-and-zoo-animals/nutrition-in-rodents-and-lagomorphs"],
-      ["Merck Vet Manual｜Guinea Pigs（專章）","https://www.merckvetmanual.com/exotic-and-laboratory-animals/rodents/guinea-pigs"],
+      ["Merck Vet Manual｜Rodents & Lagomorphs","https://www.merckvetmanual.com/management-and-nutrition/nutrition-exotic-and-zoo-animals/nutrition-in-rodents-and-lagomorphs"],
+      ["Merck Vet Manual｜Guinea Pigs","https://www.merckvetmanual.com/exotic-and-laboratory-animals/rodents/guinea-pigs"],
       ["OptiBac｜NCFM®","https://www.optibacprobiotics.com/professionals/probiotics-database/lactobacillus/lactobacillus-acidophilus/lactobacillus-acidophilus-ncfm"],
       ["OptiBac｜HN001","https://www.optibacprobiotics.com/professionals/probiotics-database/lactobacillus/lactobacillus-rhamnosus/lactobacillus-rhamnosus-hn001"],
       ["PMC｜B. lactis HN019 綜述","https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8712437/"],
@@ -277,26 +370,27 @@ E 抗氧化保護；B 群參與能量與神經功能。
     `;
   }
 
-  // ====== 分頁資料（標題與對應原文/強調區） ======
+  // ========= 分頁資料 =========
   const sections = [
-    { id: "background", title: "背景與產品概述", raw: RAW_BACKGROUND, renderHighlights: HighlightsBackground },
-    { id: "needs", title: "特寵的主要營養需求", raw: RAW_NEEDS, renderHighlights: HighlightsNeeds },
-    { id: "ingredients", title: "成分逐項分析與比較", raw: RAW_INGREDIENTS, renderHighlights: HighlightsIngredients },
-    { id: "applicability", title: "各類特寵的適用性評估", raw: RAW_APPLICABILITY, renderHighlights: HighlightsApplicability },
-    { id: "conclusion", title: "評估結論", raw: RAW_CONCLUSION, renderHighlights: HighlightsConclusion },
-    { id: "refs", title: "參考資料（附上網址）", raw: RAW_REFS, renderHighlights: HighlightsRefs },
+    { id: "background",    title: "全方位益生菌概要",         raw: RAW_BACKGROUND,         renderHighlights: HighlightsBackground },
+    { id: "needs",         title: "特寵常見營養需求",       raw: RAW_NEEDS,              renderHighlights: HighlightsNeeds },
+    { id: "ingredients",   title: "核心成分",         raw: RAW_INGREDIENTS_DETAIL,renderHighlights: HighlightsIngredients },
+    { id: "applicability", title: "不同物種的適用說明",     raw: RAW_APPLICABILITY,      renderHighlights: HighlightsApplicability },
+    { id: "usage",         title: "使用方式（怎麼餵、為什麼）", raw: RAW_USAGE,           renderHighlights: HighlightsUsage },
+    { id: "conclusion",    title: "總結及注意事項",         raw: RAW_CONCLUSION,         renderHighlights: HighlightsConclusion },
+    { id: "refs",          title: "參考依據",               raw: RAW_REFS,               renderHighlights: HighlightsRefs },
   ];
   const order = sections.map(s=>s.id);
 
-  // ====== 狀態 ======
+  // ========= 狀態 =========
   let active = order[0];
   let dark = true;
   let preview = "desktop";
 
-  // ====== DOM 參照 ======
+  // ========= DOM =========
   const yearEl = document.getElementById("year");
   const titleEl = document.getElementById("title");
-  const rawTitleEl = document.getElementById("raw-title");
+  const rawLabelEl = document.getElementById("raw-label");
   const rawEl = document.getElementById("raw");
   const highlightsEl = document.getElementById("highlights");
   const tocEl = document.getElementById("toc");
@@ -307,23 +401,24 @@ E 抗氧化保護；B 群參與能量與神經功能。
   const btnMobile = document.getElementById("btn-mobile");
   const previewWrap = document.getElementById("preview-wrap");
 
-  // ====== 初始化 ======
+  // ========= 初始化 =========
   yearEl.textContent = new Date().getFullYear();
 
-  // 建立側欄 TOC
-  tocEl.innerHTML = sections.map((s, idx) => `
-    <li>
-      <button data-id="${s.id}" class="w-full text-left px-3 py-2 rounded-xl transition ${active===s.id ? "bg-emerald-500 text-white" : "hover:bg-white/5"}" ${active===s.id ? 'aria-current="page"' : ""}>
-        <span class="font-semibold">${String(idx+1).padStart(2,"0")}. ${s.title}</span>
-      </button>
-    </li>
-  `).join("");
+  function renderTOC(){
+    tocEl.innerHTML = sections.map((s, idx) => `
+      <li>
+        <button data-id="${s.id}" class="w-full text-left px-3 py-2 rounded-xl transition ${active===s.id ? "bg-emerald-500 text-white" : "hover:bg-white/5"}" ${active===s.id ? 'aria-current="page"' : ""}>
+          <span class="font-semibold">${String(idx+1).padStart(2,"0")}. ${s.title}</span>
+        </button>
+      </li>
+    `).join("");
+  }
+  renderTOC();
   tocEl.addEventListener("click", e=>{
     const btn = e.target.closest("button[data-id]");
     if(!btn) return;
     active = btn.getAttribute("data-id");
     render();
-    // 更新選中樣式
     [...tocEl.querySelectorAll("button")].forEach(b=>{
       b.classList.toggle("bg-emerald-500", b.getAttribute("data-id")===active);
       b.classList.toggle("text-white", b.getAttribute("data-id")===active);
@@ -332,7 +427,6 @@ E 抗氧化保護；B 群參與能量與神經功能。
     });
   });
 
-  // 主題切換
   btnTheme.addEventListener("click", ()=>{
     dark = !dark;
     document.documentElement.classList.toggle("dark", dark);
@@ -343,7 +437,6 @@ E 抗氧化保護；B 群參與能量與神經功能。
     btnTheme.textContent = dark ? "🌙 深色" : "🌞 淺色";
   });
 
-  // 預覽切換
   function updatePreviewButtons(){
     btnDesktop.classList.toggle("bg-white/10", preview==="desktop");
     btnDesktop.classList.toggle("opacity-70", preview!=="desktop");
@@ -353,30 +446,45 @@ E 抗氧化保護；B 群參與能量與神經功能。
   btnDesktop.addEventListener("click", ()=>{ preview="desktop"; previewWrap.classList.remove("max-w-[420px]"); updatePreviewButtons(); });
   btnMobile.addEventListener("click", ()=>{ preview="mobile"; previewWrap.classList.add("max-w-[420px]"); updatePreviewButtons(); });
 
-  // 上/下一節
-  btnPrev.addEventListener("click", ()=>{
-    const i = sections.findIndex(s=>s.id===active);
-    active = i>0 ? sections[i-1].id : sections[sections.length-1].id;
-    render();
+  btnPrev.addEventListener("click", gotoPrev);
+  btnNext.addEventListener("click", gotoNext);
+  document.addEventListener("keydown", e=>{
+    if(e.key.toLowerCase()==="j") gotoPrev();
+    if(e.key.toLowerCase()==="k") gotoNext();
   });
-  btnNext.addEventListener("click", ()=>{
-    const i = sections.findIndex(s=>s.id===active);
-    active = i<sections.length-1 ? sections[i+1].id : sections[0].id;
-    render();
-  });
+  function gotoPrev(){ const i = sections.findIndex(s=>s.id===active); active = i>0 ? sections[i-1].id : sections[sections.length-1].id; render(); }
+  function gotoNext(){ const i = sections.findIndex(s=>s.id===active); active = i<sections.length-1 ? sections[i+1].id : sections[0].id; render(); }
 
-  // 渲染
+  // 逐字的格式化器：非成分頁才用
+  function formatRaw(text){
+    let html = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    const rules = [
+      [/(益生菌)/g, '<b class="text-emerald-400">$1</b>'],
+      [/(維生素\s*[A-Z0-9]+|Vit[A-Za-z0-9]+)/g, '<b class="text-violet-300">$1</b>'],
+      [/(鈣|D3|UVB)/g, '<b class="text-amber-300">$1</b>'],
+      [/(纖維)/g, '<b class="text-sky-300">$1</b>'],
+      [/(CFU)/g, '<b class="text-cyan-300">$1</b>'],
+      [/(注意|貼心提醒|警語)/g, '<b class="text-rose-400">$1</b>'],
+    ];
+    rules.forEach(([re, rep]) => { html = html.replace(re, rep); });
+    html = html.replace(/\r\n/g,"\n").replace(/\n{2,}/g, '\n\n🧩 ').replace(/\n/g, '<br>');
+    return '<p>'+html.replace(/(\n\n🧩 )/g,'</p><p>🧩 ').replace(/^🧩 /,'')+'</p>';
+  }
+
   function render(){
     const current = sections.find(s=>s.id===active) || sections[0];
     titleEl.textContent = current.title;
-    rawTitleEl.textContent = current.title;
-    rawEl.textContent = current.raw; // 逐字呈現
-    highlightsEl.innerHTML = current.renderHighlights(); // 強調區
-    // 捲動到頂
+    if(current.id === "ingredients"){
+      rawLabelEl.textContent = "📄 詳細成分/特色👇";
+      rawEl.innerHTML = current.raw;      // 直接渲染 HTML，保留換行與色彩
+    } else {
+      rawLabelEl.textContent = "📄 詳細內容👇";
+      rawEl.innerHTML = formatRaw(current.raw);
+    }
+    highlightsEl.innerHTML = current.renderHighlights();
     document.scrollingElement.scrollTop = 0;
   }
 
-  // 首次渲染
   render();
   updatePreviewButtons();
   </script>
